@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Caravan</string>
+    <string name="road_btn">Road</string>
+    <string name="water_btn">Water</string>
+    <string name="hike_btn">Hike</string>
+    <string name="travel_type">Please select your type of travel:</string>
+    <string name="create_party">Create New Party</string>
+    <string name="join_button">Join Existing Party</string>
+
+    <string name="enter_id">Please enter Party ID</string>
+    <string name="box_party_id">Party ID</string>
+    <string name="box_party_pass">Password</string>
+    <string name="select_type">Please select travel type:</string>
+    <string name="group_name">Create a Party Name:</string>
+
+    <string-array name="travel_options">
+        <item></item>
+        <item>Roadway</item>
+        <item>Water</item>
+        <item>Hike</item>
+    </string-array>
+
+</resources>
