@@ -18,10 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Travel Selection Buttons
     public Button mCreateButton, mJoinButton, mVerifyButton;
+    public Button mExistUser, mRegisterUser, mSkipButton;
     public EditText mPartyName, mPartyPassword;
     public Spinner mTravelSpinner;
     public Button mLoginButton;
-    public boolean loggedIN = true;
+    public boolean loggedIN = false;
 
     public TextView mViewPartyName, mViewPartyPassword, mViewTravelType, mViewStartLocation, mViewDestination;
 
@@ -101,6 +102,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goRegister(View view) {
+        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    // SKIP BUTTON
+    // For testing purposes -- created by victor and phalguna
+    public void goSkip(View view) {
+        setContentView(R.layout.activity_main);
+        init();
+    }
+
     // Do verification of Party ID and Password
     public void createParty(View view) {
         //Maybe set content view to 'creating...'?
@@ -132,18 +145,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (check) {
+            Toast.makeText(getApplicationContext(), "Success: creating party...",
+                    Toast.LENGTH_LONG).show();
+
             // TODO: Generate a party ID for the group to be displayed
+            // created by phalguna and ray
+
+            
+
             // TODO: Create travel party on Firebase
             // TODO: Launch party monitoring screen
 
-            Toast.makeText(getApplicationContext(), "Success: creating party...",
-                    Toast.LENGTH_LONG).show();
         }
-        else
-        {
+        else {
             Toast.makeText(getApplicationContext(), "Error: Please fix the invalid fields.",
                     Toast.LENGTH_LONG).show();
-            // Toast
         }
 
     }
@@ -153,8 +169,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!loggedIN)  {
-            setContentView(R.layout.login_screen);
+            setContentView(R.layout.welcome_login);
             mLoginButton = (Button) findViewById(R.id.loginButton);
+            mExistUser = (Button) findViewById(R.id.existUser);
+            mRegisterUser = (Button) findViewById(R.id.registerUser);
+            mSkipButton = (Button) findViewById(R.id.skipButton);
         }
         else {
             setContentView(R.layout.activity_main);
