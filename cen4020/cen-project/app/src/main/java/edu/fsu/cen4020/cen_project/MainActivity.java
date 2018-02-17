@@ -1,5 +1,6 @@
 package edu.fsu.cen4020.cen_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,16 +14,16 @@ public class MainActivity extends AppCompatActivity {
     // Initial Main Activity Skeleton
 
     // Travel Selection Buttons
-
     public Button mCreateButton, mJoinButton, mVerifyButton;
     public EditText mPartyName, mPartyPassword;
     public Spinner mTravelSpinner;
+    public Button mLoginButton;
+    public boolean loggedIN = false;
 
     public EditText mTextBoxID, mTextBoxPass;
 
     public void init()
     {
-
         mCreateButton = (Button) findViewById(R.id.create_button);
         mJoinButton = (Button) findViewById(R.id.join_button);
 
@@ -83,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Do verification of Party ID and Password
+    public void goLogin(View view) {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    // Do verification of Party ID and Password
     public void createParty(View view) {
         //Maybe set content view to 'creating...'?
         Log.i("MainActivity", "Create Party button clicked.");
@@ -111,8 +118,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        // Initialize buttons and functionality in activity_main layout
-        init();
+        if (!loggedIN)  {
+            setContentView(R.layout.login_screen);
+            mLoginButton = (Button) findViewById(R.id.loginButton);
+        }
+        else {
+            setContentView(R.layout.activity_main);
+            // Initialize buttons and functionality in activity_main layout
+            init();
+        }
     }
 }

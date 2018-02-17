@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "122274346145",
+    "firebase_url": "https://cen4020-caravan.firebaseio.com",
+    "project_id": "cen4020-caravan",
+    "storage_bucket": "cen4020-caravan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122274346145:android:4d53978b779b8f1c",
+        "android_client_info": {
+          "package_name": "edu.fsu.cen4020.cen_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122274346145-d0tvucpq5nfeilmgqh5kmublbs8eetc0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.fsu.cen4020.cen_project",
+            "certificate_hash": "7651a1889c71b1e501bf7b5a2ff132cda7cdb0b1"
+          }
+        },
+        {
+          "client_id": "122274346145-fctjgesf1831tv6a9c40je214nngeidt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfHnDPwZorCTEHf2yRnpU9DwB1EbYVTRM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122274346145-fctjgesf1831tv6a9c40je214nngeidt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
