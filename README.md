@@ -1,5 +1,10 @@
 Caravan App for Android. 
 
-	- Integrated Firebase API
-	- Login, Register activity skeletons added
+Status:
+	- Integrated Firebase API (Database and Verification)
+	- Login, Register activity skeletons and layouts added
 	- Test case skeletons to be implemented
+
+TODO:
+	- Add additional test cases
+	- Tweak Verification methods (allow phone verification)
