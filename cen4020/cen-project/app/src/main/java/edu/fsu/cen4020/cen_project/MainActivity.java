@@ -150,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
             // TODO: Generate a party ID for the group to be displayed
             // created by phalguna and ray
-
+	    //Party Id will be created from creater userid and groupname 
+		//will be done through database	
             
 
             // TODO: Create travel party on Firebase
