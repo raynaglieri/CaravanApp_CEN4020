@@ -1,6 +1,7 @@
 package edu.fsu.cen4020.cen_project;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
     public EditText mPartyName, mPartyPassword;
     public Spinner mTravelSpinner;
     public Button mLoginButton;
-    public boolean loggedIN = false;
+    public boolean loggedIN = true;
+
+    public TextView mViewPartyName, mViewPartyPassword, mViewTravelType, mViewStartLocation, mViewDestination;
 
     public EditText mTextBoxID, mTextBoxPass;
 
@@ -55,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
                 mPartyName = (EditText) findViewById(R.id.partyName);
                 mPartyPassword = (EditText) findViewById(R.id.partyPassword);
                 mTravelSpinner = (Spinner) findViewById(R.id.travelSpinner);
+
+                mViewPartyName = (TextView) findViewById(R.id.viewPartyName);
+                mViewPartyPassword = (TextView) findViewById(R.id.viewPartyPassword);
+                mViewTravelType = (TextView) findViewById(R.id.viewTravelType);
+                mViewStartLocation = (TextView) findViewById(R.id.viewStartLocation);
+                mViewDestination = (TextView) findViewById(R.id.viewDestination);
+
                 Log.i("MainActivity:", "Join Button");
             }
         }) ;
@@ -94,23 +106,45 @@ public class MainActivity extends AppCompatActivity {
         //Maybe set content view to 'creating...'?
         Log.i("MainActivity", "Create Party button clicked.");
 
+        boolean check = true;
+        mViewPartyName.setTextColor(Color.BLACK);
+        mViewPartyPassword.setTextColor(Color.BLACK);
+        mViewTravelType.setTextColor(Color.BLACK);
+
         // Verify that all required fields are filled
         if (mPartyName.getText().toString().isEmpty())
         {
             Log.i("MainActivity", "Party Name empty.");
+            mViewPartyName.setTextColor(Color.RED);
+            check = false;
         }
         if (mPartyPassword.getText().toString().isEmpty())
         {
             Log.i("MainActivity", "Party Password empty.");
+            mViewPartyPassword.setTextColor(Color.RED);
+            check = false;
         }
         if (mTravelSpinner.getSelectedItemPosition() == 0)
         {
             Log.i("MainActivity", "Selection invalid.");
+            mViewTravelType.setTextColor(Color.RED);
+            check = false;
         }
 
-        // TODO: Generate a party ID for the group to be displayed
-        // TODO: Create travel party on Firebase
-        // TODO: Launch party monitoring screen
+        if (check) {
+            // TODO: Generate a party ID for the group to be displayed
+            // TODO: Create travel party on Firebase
+            // TODO: Launch party monitoring screen
+
+            Toast.makeText(getApplicationContext(), "Success: creating party...",
+                    Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Error: Please fix the invalid fields.",
+                    Toast.LENGTH_LONG).show();
+            // Toast
+        }
 
     }
 
@@ -128,4 +162,5 @@ public class MainActivity extends AppCompatActivity {
             init();
         }
     }
+
 }
