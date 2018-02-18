@@ -12,9 +12,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
 
     // Initial Main Activity Skeleton
+
+    public static FirebaseUser currentUser = null;
+    private DatabaseReference mDatabase;
 
     // Travel Selection Buttons
     public Button mCreateButton, mJoinButton, mVerifyButton;
@@ -25,13 +32,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean loggedIN = false;
 
     public TextView mViewPartyName, mViewPartyPassword, mViewTravelType, mViewStartLocation, mViewDestination;
+    public TextView mViewWelcomeUser;
 
     public EditText mTextBoxID, mTextBoxPass;
 
     public void init()
     {
+
+        // Get reference of Firebase Database for reads/writes
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mViewWelcomeUser = (TextView) findViewById(R.id.welcome_User);
         mCreateButton = (Button) findViewById(R.id.create_button);
         mJoinButton = (Button) findViewById(R.id.join_button);
+
+        String welcomeMsg = "Welcome, " + currentUser.getEmail() + "!";
+        mViewWelcomeUser.setText(welcomeMsg);
 
         // Launchable intents go here (button launches)
 
@@ -147,14 +163,15 @@ public class MainActivity extends AppCompatActivity {
         if (check) {
             Toast.makeText(getApplicationContext(), "Success: creating party...",
                     Toast.LENGTH_LONG).show();
-
             // TODO: Generate a party ID for the group to be displayed
             // created by phalguna and ray
-	    //Party Id will be created from creater userid and groupname 
-		//will be done through database	
-            
+	            //Party Id will be created from creater userid and groupname
+		        //will be done through database
 
             // TODO: Create travel party on Firebase
+
+
+
             // TODO: Launch party monitoring screen
 
         }
@@ -169,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!loggedIN)  {
+        if (currentUser==null)  {
             setContentView(R.layout.welcome_login);
             mLoginButton = (Button) findViewById(R.id.loginButton);
             mExistUser = (Button) findViewById(R.id.existUser);
