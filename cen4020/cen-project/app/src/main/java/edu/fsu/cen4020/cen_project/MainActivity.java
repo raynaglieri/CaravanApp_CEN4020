@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Do verification of Party ID and Password
+    // Raymond and Roberto
     public void navigateVerify(View view) {
         setContentView(R.layout.activity_main);
         if (mTextBoxID.getText().toString().isEmpty())
@@ -170,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
 
 
-            // TODO: Generate a party ID for the group to be displayed
+            FirebaseDatabase db = FirebaseDatabase.getInstance();
+            // Generate a Key?
+            String key = db.getReference("partys").push().getKey();
 
             // created by phalguna and ray
 	            //Party Id will be created from creater userid and groupname
@@ -192,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
-            String partyKey = "0000"; // set party key here from phalguna and rays generated key
+            String partyKey = key; // set party key here from phalguna and rays generated key
             String partyName = mPartyName.getText().toString();
             String leader = user.getEmail().toString();
             String followers = "testUser1";     // should be none at current time
