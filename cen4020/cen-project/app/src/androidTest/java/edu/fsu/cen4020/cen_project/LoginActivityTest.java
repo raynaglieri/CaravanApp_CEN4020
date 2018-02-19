@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created by victor on 2/18/18.
+ *
+ * Pair Programming by: Victor and Roberto (Updated)
  */
 public class LoginActivityTest {
 
@@ -15,7 +17,7 @@ public class LoginActivityTest {
     // Test Cases Pair Programming by Victor & Phalguna
 
     // Pass:
-    public String email_test_pass = "victor@google.com";    // pass, contains '@' and '.'
+    public String email_test_pass = "victor@gmail.com";    // pass, contains '@' and '.'
     public String password_test_pass = "testpassword";      // pass, length > 5
 
     // Fail:
