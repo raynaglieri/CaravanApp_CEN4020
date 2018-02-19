@@ -12,12 +12,14 @@ public class LoginActivityTest {
     // Place tests here
     // For testing username and password pre-validation requirements
 
+    // Test Cases Pair Programming by Victor & Phalguna
+
     // Pass:
-    public String email_test_pass = "victor@google.com";     // pass, contains '@' and '.'
-    public String password_test_pass = "testpassword";  // pass, length > 5
+    public String email_test_pass = "victor@google.com";    // pass, contains '@' and '.'
+    public String password_test_pass = "testpassword";      // pass, length > 5
 
     // Fail:
-    public String email_test_fail = "victor'at'msn.com"; // no pass
+    public String email_test_fail = "victor'at'msn.com";    // no pass
     public String password_test_fail = "bob";               // no pass
 
     @Test
