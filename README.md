@@ -1,7 +1,6 @@
 Caravan App for Android. 
 
 README:
-
 2/18/18:
 Compile and Run: 
 1.	Download and install the latest version of Android Studio: 3.0.1. 
