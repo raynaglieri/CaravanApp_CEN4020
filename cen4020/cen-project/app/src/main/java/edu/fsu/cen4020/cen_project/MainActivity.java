@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     // Initial Main Activity Skeleton
 
     public static FirebaseUser currentUser = null;
-    private DatabaseReference mDatabase;
+    public FirebaseAuth firebaseAuth;
+    public DatabaseReference mDatabase;
+    public DatabaseReference dbRef;
 
     // Travel Selection Buttons
     public Button mCreateButton, mJoinButton, mVerifyButton;
@@ -41,10 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Get reference of Firebase Database for reads/writes
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        dbRef = FirebaseDatabase.getInstance().getReference("partys");
 
         mViewWelcomeUser = (TextView) findViewById(R.id.welcome_User);
         mCreateButton = (Button) findViewById(R.id.create_button);
         mJoinButton = (Button) findViewById(R.id.join_button);
+
+        // TODO: Add logout button
 
         String welcomeMsg = "Welcome, " + currentUser.getEmail() + "!";
         mViewWelcomeUser.setText(welcomeMsg);
@@ -65,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }) ;
 
-        /* Road Button */
-        // launches FragmentList intent to invite participants to join party
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,16 +168,52 @@ public class MainActivity extends AppCompatActivity {
         if (check) {
             Toast.makeText(getApplicationContext(), "Success: creating party...",
                     Toast.LENGTH_LONG).show();
+
+
             // TODO: Generate a party ID for the group to be displayed
+
             // created by phalguna and ray
 	            //Party Id will be created from creater userid and groupname
 		        //will be done through database
 
-            // TODO: Create travel party on Firebase
+            // Create travel party on Firebase
 
+            /**
+             * Vals:
+             *      private String partyKey; // assigned
+                    private String partyName;
+                    private String leader;
+                    private String[] followers;
+                    private double start_lat;
+                    private double start_long;
+                    private double end_lat;
+                    private double end_long;
+             */
 
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+
+            String partyKey = "0000"; // set party key here from phalguna and rays generated key
+            String partyName = mPartyName.getText().toString();
+            String leader = user.getEmail().toString();
+            String followers = "testUser1";     // should be none at current time
+            double start_lat = 0;
+            double start_long = 0;
+            double end_long = 0;
+            double end_lat = 0;
+
+            Partys party = new Partys(partyKey, partyName, leader, followers, start_lat, start_long, end_long, end_lat);
+
+            // create the database entry in firebase
+            dbRef.child(partyKey).setValue(party);
+
+            Toast.makeText(getApplicationContext(), "Party creation successful!",
+                    Toast.LENGTH_LONG).show();
 
             // TODO: Launch party monitoring screen
+
+            Intent intent = new Intent(MainActivity.this, JourneyActivity.class);
+            startActivity(intent);
+
 
         }
         else {
