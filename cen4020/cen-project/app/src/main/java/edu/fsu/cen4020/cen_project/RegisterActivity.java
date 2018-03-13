@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         dbRef.child(name).setValue(user);
     }
-
+//Phalguna and Roberto
     public boolean checkEmail(String email)
     {
         boolean result = false;
