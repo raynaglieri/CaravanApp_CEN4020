@@ -187,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
             check = false;
         }
 
+        /*
+            The party is fully created here
+         */
         if (check) {
             Toast.makeText(getApplicationContext(), "Success: creating party...",
                     Toast.LENGTH_LONG).show();
@@ -248,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
             // insert partyKey into user's account
             dbRef = FirebaseDatabase.getInstance().getReference().child("users");
-            dbRef.child(username).child("partyKeys").push().setValue(name_key);
+            dbRef.child(username).child("partyKeys").push().setValue(key);
 
             Toast.makeText(getApplicationContext(), "Party creation successful!",
                     Toast.LENGTH_LONG).show();
