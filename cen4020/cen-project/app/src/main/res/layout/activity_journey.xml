@@ -44,19 +44,17 @@
         android:layout_alignLeft="@+id/textPartyName"
         android:layout_alignStart="@+id/textPartyName"
         android:layout_below="@+id/textPartyName"
-        android:capitalize="none"
         android:gravity="center"
         android:text="Party Followers"
         android:textColor="@color/colorAccent" />
 
     <ListView
-        android:id="@+id/partyFollowers"
+        android:id="@+id/listPartyFollowers"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignStart="@+id/textView4"
         android:layout_below="@+id/textView4"
-        android:backgroundTint="@color/colorAccentListView"
         android:divider="@color/colorAccent"
         android:dividerHeight="1dp"
         android:footerDividersEnabled="true"
@@ -66,14 +64,14 @@
         android:id="@+id/partySettingsButton"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:layout_alignLeft="@+id/partyFollowers"
-        android:layout_alignStart="@+id/partyFollowers"
-        android:layout_below="@+id/partyFollowers"
+        android:layout_alignLeft="@+id/listPartyFollowers"
+        android:layout_alignStart="@+id/listPartyFollowers"
+        android:layout_below="@+id/listPartyFollowers"
         android:background="@color/colorAccent2Caravan"
         android:text="Party Settings" />
 
     <Button
-        android:id="@+id/quickInvite"
+        android:id="@+id/quickInviteButton"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_alignLeft="@+id/partySettingsButton"
@@ -84,12 +82,12 @@
         android:text="Quick Invite" />
 
     <Button
-        android:id="@+id/launchButton"
+        android:id="@+id/launchJourneyButton"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_alignLeft="@+id/quickInvite"
-        android:layout_alignStart="@+id/quickInvite"
-        android:layout_below="@+id/quickInvite"
+        android:layout_alignLeft="@+id/quickInviteButton"
+        android:layout_alignStart="@+id/quickInviteButton"
+        android:layout_below="@+id/quickInviteButton"
         android:layout_marginTop="13dp"
         android:background="@color/colorAccent"
         android:text="Launch Journey" />
