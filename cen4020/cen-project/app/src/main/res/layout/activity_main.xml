@@ -9,28 +9,30 @@
     <TextView
         android:id="@+id/welcome_User"
         android:layout_width="match_parent"
-        android:layout_height="145dp"
-        android:layout_weight="0.57" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="373dp"
-        android:layout_height="396dp"
-        android:layout_weight="0.57"
-        app:srcCompat="?android:attr/textSelectHandle" />
+        android:layout_height="40dp" />
 
     <Button
         android:id="@+id/create_button"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
-        android:text="@string/create_party"
-        android:layout_weight="0.13" />
+        android:layout_height="60dp"
+        android:text="@string/create_party" />
 
     <Button
         android:id="@+id/join_button"
         android:layout_width="match_parent"
-        android:layout_height="94dp"
-        android:text="@string/join_button"
-        android:layout_weight="0.22" />
+        android:layout_height="60dp"
+        android:text="@string/join_button" />
+
+    <Button
+        android:id="@+id/myPartiesButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/my_parties" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/logout" />
 
 </LinearLayout>

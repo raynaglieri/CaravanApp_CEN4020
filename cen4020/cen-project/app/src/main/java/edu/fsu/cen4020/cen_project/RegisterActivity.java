@@ -18,6 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // TODO: Add support for user registration. Managed via Firebase
 
 public class RegisterActivity extends AppCompatActivity {
@@ -77,11 +80,12 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
 
         int journeys = 0;
+        List<String> partyKeys = new ArrayList<>();
 
         // Generate a Key?
         String key = db.getReference("users").push().getKey();
 
-        Users user = new Users(email, password, journeys);
+        Users user = new Users(email, password, journeys, partyKeys);
 
         FirebaseUser fb_user = mAuth.getCurrentUser();
 
