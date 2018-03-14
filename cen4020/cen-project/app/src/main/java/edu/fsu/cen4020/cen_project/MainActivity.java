@@ -157,7 +157,18 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
-    // Do verification of Party ID and Password
+    /*
+        This is where a user can create a Party
+            -- Party ID, Password, Travel Type, Start Location, Destination, Make Active Checkbox
+            -- Followers are to be invited in the corresponding screen
+
+        TODO: Potentially make this a seperate class?
+        TODO: Integrate Geolocation and Google Maps
+        TODO: Google Maps -- Select Start Location Button, Select Destination Button
+        TODO: Make Active Checkbox on creation screen to denote if they want the party to be active
+            -- IF A PARTY IS MADE 'ACTIVE' ALL OTHER PARTIES ARE DEACTIVATED FOR THE USER
+            -- ONLY ONE PARTY MAY BE ACTIVE AT A TIME
+     */
     public void createParty(View view) {
         //Maybe set content view to 'creating...'?
         Log.i("MainActivity", "Create Party button clicked.");
