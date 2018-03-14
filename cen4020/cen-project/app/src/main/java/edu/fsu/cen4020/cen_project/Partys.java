@@ -1,5 +1,7 @@
 package edu.fsu.cen4020.cen_project;
 
+import java.util.List;
+
 /**
  * Created by victor on 2/18/18.
  * Pair programming done by: Victor and Raymond, Phalguna and Raymond
@@ -16,13 +18,15 @@ public class Partys {
      */
 
     public String partyKey; // assigned
+    public String partyPassword;
     public String partyName;
     public String leader;
-    public String followers;
+    public List<String> followers;
     public double start_lat;
     public double start_long;
     public double end_lat;
     public double end_long;
+    public boolean active;
 
     // TODO: Support for Google Maps for LatLng Type
     //public LatLng startLocation;
@@ -32,9 +36,10 @@ public class Partys {
         // Default constructor required for calls to DataSnapshot.getValue(Partys.class)
     }
 
-    public Partys(String groupID, String groupName, String leader, String followers, double start_lat, double start_long,
-                  double end_lat, double end_long) {
+    public Partys(String groupID, String partyPassword, String groupName, String leader, List<String> followers, double start_lat, double start_long,
+                  double end_lat, double end_long, boolean active) {
         this.partyKey = groupID;
+        this.partyPassword = partyPassword;
         this.partyName = groupName;
         this.leader = leader;
         this.followers = followers;
@@ -42,6 +47,7 @@ public class Partys {
         this.start_long = start_long;
         this.end_lat = end_lat;
         this.end_long = end_long;
+        this.active = active;
     }
 
     // Accessors go here

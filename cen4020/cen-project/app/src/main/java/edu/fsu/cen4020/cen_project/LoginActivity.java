@@ -104,9 +104,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        loginSuccess(currentUser);
-        Toast.makeText(LoginActivity.this, "User already logged in.",
-                Toast.LENGTH_SHORT).show();
+        if (currentUser!=null)
+        {
+            loginSuccess(currentUser);
+            Toast.makeText(LoginActivity.this, "User already logged in.",
+                    Toast.LENGTH_SHORT).show();
+            setContentView(R.layout.activity_main);
+        }
         //Update UI HERE
         //updateUI(currentUser);
     }

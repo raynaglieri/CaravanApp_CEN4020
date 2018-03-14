@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="goLogin"
-        android:text="Existing User" />
+        android:text="Login (Existing User)" />
 
     <Button
         android:id="@+id/registerUser"

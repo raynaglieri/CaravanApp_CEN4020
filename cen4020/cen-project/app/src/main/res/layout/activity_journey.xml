@@ -1,9 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.fsu.cen4020.cen_project.JourneyActivity">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="Select your Party..." />
+
+    <Spinner
+        android:id="@+id/partySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:fadingEdge="none"
+        android:outlineProvider="bounds"
+        android:visibility="visible" />
+
+    <ListView
+        android:id="@+id/partyFollowers"
+        android:layout_width="match_parent"
+        android:layout_height="325dp"
+        android:layout_alignLeft="@+id/partySpinner"
+        android:layout_alignStart="@+id/partySpinner"
+        android:layout_below="@+id/partySpinner"
+        android:layout_marginTop="23dp" />
+
+</RelativeLayout>
