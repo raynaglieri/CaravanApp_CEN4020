@@ -28,11 +28,28 @@ Acceptance Tests:
 
 Status:
 	
-	- Integrated Firebase API (Database and Verification)
-	- Login, Register activity skeletons and layouts added
-	- Test case skeletons to be implemented
+	- Integrated Firebase API (Database and Verification) [check]
+	- Login, Register activity skeletons and layouts added [check]
+	- Test case skeletons to be implemented [check]
+	- Add Logout Button and functionality to main screen [check]
+	- View my (logged in user’s) parties via Spinner Drop Down [check]
+	- Select party from dropdown to view followers [check]
+	- Load followers from selected party into ListView Box for monitoring [check]
+	- Fix layout for Journey Activity (activity_journey.xml) [check]
+
+IN PROGRESS:
+
+	- Invite users to party (by leader) [currently working on]
+	- Join party based on Party Key (add follower) [currently working on]
 
 TODO:
 
+	- Journey Settings
+	- Integrate Google Maps API in MainActivity (Create Party)
+	- Revamp Create New Party Layout
+	- Select start location (Geo LatLng)
+	- Select destination (Geo LatLng)
+	- Add back buttons instead of android default UI back button
+	- Fix strange NullPointerOutofBounds exception on login
 	- Add additional test cases
 	- Tweak Verification methods (allow phone verification)

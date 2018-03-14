@@ -14,7 +14,6 @@
     <string name="group_name">Create a Party Name:</string>
 
     <string-array name="travel_options">
-        <item></item>
         <item>Roadway</item>
         <item>Water</item>
         <item>Hike</item>
