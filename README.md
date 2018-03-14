@@ -44,6 +44,7 @@ IN PROGRESS:
 
 TODO:
 
+	- Change: User system, Invite system based on email addresses instead of usernames to increase potential userbase.
 	- Journey Settings
 	- Integrate Google Maps API in MainActivity (Create Party)
 	- Revamp Create New Party Layout
