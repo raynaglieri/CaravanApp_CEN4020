@@ -30,6 +30,12 @@
         android:text="@string/my_parties" />
 
     <Button
+        android:id="@+id/myLobbiesButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Followed Lobbies" />
+
+    <Button
         android:id="@+id/logout_button"
         android:layout_width="match_parent"
         android:layout_height="60dp"

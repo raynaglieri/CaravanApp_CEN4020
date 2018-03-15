@@ -27,6 +27,7 @@ public class Partys {
     public double end_lat;
     public double end_long;
     public boolean active;
+    public boolean launched;
 
     // TODO: Support for Google Maps for LatLng Type
     //public LatLng startLocation;
@@ -37,7 +38,7 @@ public class Partys {
     }
 
     public Partys(String groupID, String partyPassword, String groupName, String leader, List<String> followers, double start_lat, double start_long,
-                  double end_lat, double end_long, boolean active) {
+                  double end_lat, double end_long, boolean active, boolean launched) {
         this.partyKey = groupID;
         this.partyPassword = partyPassword;
         this.partyName = groupName;
@@ -48,6 +49,7 @@ public class Partys {
         this.end_lat = end_lat;
         this.end_long = end_long;
         this.active = active;
+        this.launched = launched;   // if journey has been launched or not
     }
 
     // Accessors go here

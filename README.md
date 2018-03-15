@@ -39,12 +39,15 @@ Status:
 
 IN PROGRESS:
 
-	- Invite users to party (by leader) [currently working on]
-	- Join party based on Party Key (add follower) [currently working on]
+	- Invite users to party (by leader) [implemented--testing]
+	- Join existing party by PartyKey:Password (add follower to party) [implemented--testing]
+		- List party's that user 'follows', and 'my parties' [implemented--testing]
+	- Add User->Inbox functionality to respond to invites [currently working on]
+	- Text message support to send PartyKey:Password to a user [todo]
 
 TODO:
 
-	- Change: User system, Invite system based on email addresses instead of usernames to increase potential userbase.
+	- Potential Change: User system, Invite system based on email addresses instead of usernames to increase potential userbase.
 	- Journey Settings
 	- Integrate Google Maps API in MainActivity (Create Party)
 	- Revamp Create New Party Layout
