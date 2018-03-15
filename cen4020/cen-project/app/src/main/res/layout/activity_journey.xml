@@ -12,7 +12,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
-        android:gravity="center"
         android:text="Your Party Keys"
         android:textColor="@color/colorAccent" />
 

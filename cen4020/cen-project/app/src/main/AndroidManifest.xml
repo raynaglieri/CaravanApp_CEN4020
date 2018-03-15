@@ -25,7 +25,8 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".JourneyActivity"></activity>
+        <activity android:name=".JourneyActivity" />
+        <activity android:name=".JourneyLobby"></activity>
     </application>
 
 </manifest>
