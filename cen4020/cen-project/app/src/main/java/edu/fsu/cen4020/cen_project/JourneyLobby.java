@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 /*
-    JourneyLobby.java -- by Victor and Phalguna
+    JourneyLobby.java -- Initial theory and implementation via Pair Programming by Victor and Phalguna
 
     Each party has a lobby, a user may join the lobby and indicate readyness, as well as view other
     user's readyness.
@@ -17,8 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class JourneyLobby extends AppCompatActivity {
 
-    // Components
-
+    // Initialize Components
     public void init()
     {
 

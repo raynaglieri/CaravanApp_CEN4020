@@ -13,22 +13,26 @@ import java.util.List;
 
 public class Users {
 
+    // Additional Pair Programming by Phalguna and Raymond
+
     public String email;
     public String password;
     public int journeyCount;            // increment this after each respective launch and finish of journey
     public List<String> partyKeys;
     public List<String> inbox;
+    public String active_party;
 
     public Users() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Users(String email, String password, int journeyCount, List<String> partyKeys, List<String> inbox) {
+    public Users(String email, String password, int journeyCount, List<String> partyKeys, List<String> inbox, String active_party) {
         this.email = email;
         this.password = password;
         this.journeyCount = journeyCount;
         this.partyKeys = partyKeys;
         this.inbox = inbox;
+        this.active_party = active_party;
     }
 
 }

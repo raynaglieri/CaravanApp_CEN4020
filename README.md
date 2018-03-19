@@ -36,23 +36,26 @@ Status:
 	- Select party from dropdown to view followers [check]
 	- Load followers from selected party into ListView Box for monitoring [check]
 	- Fix layout for Journey Activity (activity_journey.xml) [check]
+	- Invite users to party (by leader) [check]
+	- Join existing party by PartyKey:Password (add follower to party) [check]
+	- List party's that user 'follows', and 'my parties' [check]
+	- Integrate Google Maps API in MainActivity (Create Party) [check]
+	- Revamp Create New Party Layout [check]
+	- Added launch support for Journey Paries [check]
 
 IN PROGRESS:
 
-	- Invite users to party (by leader) [implemented--testing]
-	- Join existing party by PartyKey:Password (add follower to party) [implemented--testing]
-		- List party's that user 'follows', and 'my parties' [implemented--testing]
-	- Add User->Inbox functionality to respond to invites [currently working on]
-	- Text message support to send PartyKey:Password to a user [todo]
+	- Add User->Inbox functionality to respond to invites [todo]
+	- Select start location (Geo LatLng--Google Maps API) [progress]
+	- Select destination (Geo LatLng--Google Maps API) [progress]
 
 TODO:
 
 	- Potential Change: User system, Invite system based on email addresses instead of usernames to increase potential userbase.
+	- Multi-user support
+	- Additional launch functionality: broadcast sender and receiver for journey launch
 	- Journey Settings
-	- Integrate Google Maps API in MainActivity (Create Party)
-	- Revamp Create New Party Layout
-	- Select start location (Geo LatLng)
-	- Select destination (Geo LatLng)
+	- Text message support to send PartyKey:Password to a user
 	- Add back buttons instead of android default UI back button
 	- Fix strange NullPointerOutofBounds exception on login
 	- Add additional test cases

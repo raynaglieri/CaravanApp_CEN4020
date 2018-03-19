@@ -51,11 +51,23 @@
         android:layout_height="wrap_content"
         android:text="Start Location:" />
 
+    <Button
+        android:id="@+id/startLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Start" />
+
     <TextView
         android:id="@+id/viewDestination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Destination:" />
+
+    <Button
+        android:id="@+id/stopLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Stop" />
 
     <Button
         android:id="@+id/createGroupBtn"
