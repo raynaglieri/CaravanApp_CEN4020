@@ -1,6 +1,7 @@
 package edu.fsu.cen4020.cen_project;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -76,8 +77,6 @@ public class JourneyActivity extends AppCompatActivity {
             UI Text Fields
          */
         //mJourneyPartyID = (TextView) findViewById(R.id.JourneyPartyID);
-
-
 
     }
 
@@ -265,9 +264,95 @@ public class JourneyActivity extends AppCompatActivity {
             }
         }) ;
 
+        // Pair Programming: Victor and Ray
+        mLaunchJourneyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkLaunchConditions())
+                {
+                    // Update Party Key as Launched
+                    launchPartyKey(selectedPartyKey);
+
+                    // Launch the MapsActivity
+                    // Pass Party Information via Bundle here?
+                    // On launch, we need a listener that launches the MapsActivty intent on the devices of the other users...
+                    Intent intent = new Intent(JourneyActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(JourneyActivity.this, "All users must be ready in order to launch.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }) ;
+
+    }
+
+    // Pair Programming by: Victor and Roberto
+    // "Launches" the party key; i.e. denotes that the journey has begun!
+    public void launchPartyKey(String key)
+    {
+        DatabaseReference dbRef;
+        dbRef = FirebaseDatabase.getInstance().getReference().child("partys");
+        dbRef.child(selectedPartyKey).child("launched").setValue(true);
+    }
+
+    // Pair Programming: Ray and Phalguna
+    // Additional Guidance on APIs by: Victor
+    public boolean checkLaunchConditions()
+    {
+        // TODO: (MAYBE) WAY TRACK CURRENTLY LOGGED IN USER'S VIA FIREBASE?
+        // This requires a seperate table...?
+
+        // All user's must be "ready" in launch screen.
+        // This means that all followers must be active in the lobby
+
+        // Get data snapshot of followers
+        // Check if each follower has 'active_party' = 'selectedPartyKey'
+        // AND if user is signed in
+
+        // If so, launch
+
+        final List<String> followers = new ArrayList<>();
+        boolean result = true;
+
+        mDatabase.child("partys").child(selectedPartyKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.child("followers").getChildren())
+                {
+                    Log.i("JourneyActiviy", "Launch Conditions, User: " + ds.getValue().toString());
+                    followers.add(ds.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        // Needs Reformulating
+        // Pair Programming by: Phalguna and Roberto
+        /*
+        for(int i = 0; i < followers.size(); i++)
+        {
+            String value = mDatabase.child("users").child(followers.get(i)).child("active_party").toString();
+            Log.i("JourneyActivity", value);
+
+            if (!value.equals(selectedPartyKey))
+            {
+                result = false;
+            }
+        }
+        */
+
+        return result;
     }
 
     // Sends the invite to receiver
+    // Pair Programming by: Victor and Phalguna
     public void sendInvite(Invites invite)
     {
         DatabaseReference dbRef;

@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                // Pair Programming by: Victor and Ray
                 mExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
                 {
                     @Override
@@ -149,19 +150,30 @@ public class MainActivity extends AppCompatActivity {
                         {
                             arg0.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
                         }
-                        arg0.getChildAt(pos).setBackgroundColor(Color.CYAN);
+                        arg0.getChildAt(pos).setBackgroundColor(Color.MAGENTA);
 
                         return true;
                     }
                 });
 
+                // Pair Programming by Victor and Phalguna
                 mEnterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (!selected_lobby.isEmpty())
                         {
                             Log.i("MainActivity", "Is Selected");
-                            // TODO: Launch lobby activity here with party key
+
+                            // Update Selected Lobby to User's 'active_lobby'
+                            String username = getUsernameFromEmail(firebaseAuth.getCurrentUser().getEmail());
+                            DatabaseReference dbRef;
+                            dbRef = FirebaseDatabase.getInstance().getReference().child("users");
+                            dbRef.child(username).child("active_party").setValue(selected_lobby);
+
+                            // TODO: Launch lobby activity here with corresponding party key
+
+
+
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Please select a lobby (long click).",
@@ -172,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Pair Programming: Victor and Roberto
+        // Maintenence for signing user out of application
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,13 +204,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }) ;
 
-        // TODO: Add logout button
-
         String welcomeMsg = "Welcome, " + currentUser.getEmail() + "!";
         mViewWelcomeUser.setText(welcomeMsg);
 
         // Launchable intents go here (button launches)
-        // launches FragmentList intent to invite participants to join party
+        // Launches FragmentList intent to invite participants to join party
+        // Initial Pair Programming by: Phalguna and Raymond
         mJoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 mVerifyButton = (Button) findViewById(R.id.verify_button);
                 Log.i("MainActivity:", "Join Button");
 
+                // Verify Button
+                // Pair Programming: Victor and Phalguna
                 mVerifyButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -228,10 +243,12 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Party has been joined successfully.",
                                                 Toast.LENGTH_SHORT).show();
 
-                                        // Would you like to view the party now?: AlertDialog
+                                        // TODO: Would you like to view the party now?: AlertDialog
                                         // TODO: Launch JourneyLobby Activity
                                         // --> In the JourneyLobby a user may Ready to indicate they are ready to start the journey
                                         // Must we create a Follower class to indicate readyness?
+
+
 
                                     }
                                     else
@@ -281,8 +298,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Helper function to more effectively parse email
+    // Pair Programming by Phalguna and Roberto
+    public String getUsernameFromEmail(String email)
+    {
+        // Get Firebase username for insert
+        String[] full = (email.split("@"));
+        String username = full[0];
+        return username;
+    }
+
     // Do verification of Party ID and Password
-    // Raymond and Roberto
+    // Pait Programming by Raymond and Roberto
     public void navigateVerify(View view) {
         setContentView(R.layout.activity_main);
         if (mTextBoxID.getText().toString().isEmpty())
@@ -323,6 +350,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
+        Create Party functionality
+
         This is where a user can create a Party
             -- Party ID, Password, Travel Type, Start Location, Destination, Make Active Checkbox
             -- Followers are to be invited in the corresponding screen
@@ -432,8 +461,6 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Party creation successful!",
                     Toast.LENGTH_LONG).show();
-
-            // TODO: Launch party monitoring screen
 
             setContentView(R.layout.activity_main);
             Intent intent = new Intent(MainActivity.this, JourneyActivity.class);
