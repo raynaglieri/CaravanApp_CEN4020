@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
     public EditText mTextBoxID, mTextBoxPass;
 
     /*
+        Google Maps API Location Selection Buttons (Create Party)
+     */
+
+    public Button mStartLocationButton, mStopLocationButton;
+
+    /*
         Followed Lobbies Components
 
      */
@@ -171,8 +177,14 @@ public class MainActivity extends AppCompatActivity {
                             dbRef.child(username).child("active_party").setValue(selected_lobby);
 
                             // TODO: Launch lobby activity here with corresponding party key
+                            Intent intent = new Intent(MainActivity.this, JourneyLobby.class);
 
+                            Bundle bundle = new Bundle();
+                            bundle.putString("partyKey", selected_lobby);
+                            bundle.putString("user", username);
+                            intent.putExtras(bundle);
 
+                            startActivity(intent);
 
                         }
                         else {
@@ -250,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
                                     }
                                     else
                                     {
@@ -286,16 +299,38 @@ public class MainActivity extends AppCompatActivity {
                 mPartyPassword = (EditText) findViewById(R.id.partyPassword);
                 mTravelSpinner = (Spinner) findViewById(R.id.travelSpinner);
 
+                mStartLocationButton = (Button) findViewById(R.id.startLocationButton);
+                mStopLocationButton = (Button) findViewById(R.id.stopLocationButton);
+
                 mViewPartyName = (TextView) findViewById(R.id.viewPartyName);
                 mViewPartyPassword = (TextView) findViewById(R.id.viewPartyPassword);
                 mViewTravelType = (TextView) findViewById(R.id.viewTravelType);
                 mViewStartLocation = (TextView) findViewById(R.id.viewStartLocation);
                 mViewDestination = (TextView) findViewById(R.id.viewDestination);
 
+                /*
+                    Listeners
+                 */
+
+                mStartLocationButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: Implement Google Maps Place Picker API
+                        Toast.makeText(MainActivity.this, "Start Location Click", Toast.LENGTH_SHORT).show();
+                    }
+                }) ;
+
+                mStopLocationButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: Implement Google Maps Place Picker API
+                        Toast.makeText(MainActivity.this, "Stop Location Click", Toast.LENGTH_SHORT).show();
+                    }
+                }) ;
+
                 Log.i("MainActivity:", "Join Button");
             }
         }) ;
-
     }
 
     // Helper function to more effectively parse email

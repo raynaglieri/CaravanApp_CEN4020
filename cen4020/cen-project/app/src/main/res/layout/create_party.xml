@@ -8,7 +8,9 @@
         android:id="@+id/viewPartyName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/group_name" />
+        android:text="@string/group_name"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/partyName"
@@ -22,7 +24,9 @@
         android:id="@+id/viewPartyPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Desired party password:" />
+        android:text="Desired party password:"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/partyPassword"
@@ -36,7 +40,9 @@
         android:id="@+id/viewTravelType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_type" />
+        android:text="@string/select_type"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/travelSpinner"
@@ -49,30 +55,41 @@
         android:id="@+id/viewStartLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Location:" />
+        android:text="Start Location:"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/startLocationButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
         android:text="Select Start" />
 
     <TextView
         android:id="@+id/viewDestination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Destination:" />
+        android:text="Destination:"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/stopLocationButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
         android:text="Select Stop" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="21dp" />
 
     <Button
         android:id="@+id/createGroupBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="78dp"
+        android:background="@color/colorAccent"
         android:onClick="createParty"
         android:text="Create Party" />
 
