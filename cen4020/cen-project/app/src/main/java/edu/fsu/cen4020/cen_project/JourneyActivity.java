@@ -277,6 +277,10 @@ public class JourneyActivity extends AppCompatActivity {
                     // Pass Party Information via Bundle here?
                     // On launch, we need a listener that launches the MapsActivty intent on the devices of the other users...
                     Intent intent = new Intent(JourneyActivity.this, MapsActivity.class);
+
+                    // Pass party information into Intent w/ Bundle here
+
+
                     startActivity(intent);
                 }
                 else

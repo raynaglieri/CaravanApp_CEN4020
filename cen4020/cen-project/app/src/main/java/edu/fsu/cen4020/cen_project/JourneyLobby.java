@@ -49,7 +49,8 @@ public class JourneyLobby extends AppCompatActivity {
         init();
 
         // Set partyname here with supplied key
-        
+        mPartyName.setText("Lobby Key: " + partyKey);
+
 
     }
 }

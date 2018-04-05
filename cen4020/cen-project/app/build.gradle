@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "edu.fsu.cen4020.cen_project"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -32,6 +32,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
     compile "com.google.android.gms:play-services-gcm:11.8.0"
+    compile 'com.google.android.gms:play-services-places:11.8.0'
     testCompile 'junit:junit:4.12'
 }
 
