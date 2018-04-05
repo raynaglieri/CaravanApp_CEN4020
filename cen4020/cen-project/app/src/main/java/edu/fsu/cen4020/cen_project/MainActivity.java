@@ -15,6 +15,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     public Button mMyPartiesButton;
     public Button mMyLobbiesButton;
     public boolean loggedIN = false;
+
+    public int PLACE_PICKER_REQUEST;
+
+    public LatLng startLocation = null;
+    public LatLng stopLocation = null;
 
     public TextView mViewPartyName, mViewPartyPassword, mViewTravelType, mViewStartLocation, mViewDestination;
     public TextView mViewWelcomeUser;
@@ -316,7 +326,21 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // TODO: Implement Google Maps Place Picker API
-                        Toast.makeText(MainActivity.this, "Start Location Click", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Start Location", Toast.LENGTH_SHORT).show();
+                        try {
+
+                            PLACE_PICKER_REQUEST = 1;
+
+                            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                            // Set LatLng Bounds here?
+
+                            startActivityForResult(builder.build(MainActivity.this), PLACE_PICKER_REQUEST);
+                        } catch (GooglePlayServicesNotAvailableException ex1) {
+                            Toast.makeText(MainActivity.this, "Please update your Google Play Services", Toast.LENGTH_SHORT).show();
+                        } catch (GooglePlayServicesRepairableException rp1) {
+                            Toast.makeText(MainActivity.this, "Please repair your Google Play Services", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) ;
 
@@ -324,13 +348,51 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // TODO: Implement Google Maps Place Picker API
-                        Toast.makeText(MainActivity.this, "Stop Location Click", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Stop Location", Toast.LENGTH_SHORT).show();
+                        try {
+
+                            PLACE_PICKER_REQUEST = 2;
+
+                            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                            // Set LatLng Bounds here?
+
+                            startActivityForResult(builder.build(MainActivity.this), PLACE_PICKER_REQUEST);
+                        } catch (GooglePlayServicesNotAvailableException ex1) {
+                            Toast.makeText(MainActivity.this, "Please update your Google Play Services", Toast.LENGTH_SHORT).show();
+                        } catch (GooglePlayServicesRepairableException rp1) {
+                            Toast.makeText(MainActivity.this, "Please repair your Google Play Services", Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                 }) ;
 
                 Log.i("MainActivity:", "Join Button");
             }
         }) ;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, MainActivity.this);
+                // String toastMsg = String.format("Place: %s", place.getName());
+                // Toast.makeText(MainActivity.this, toastMsg, Toast.LENGTH_LONG).show();
+                if (PLACE_PICKER_REQUEST == 1)
+                {
+                    startLocation = place.getLatLng();
+                    Toast.makeText(getApplicationContext(), "Start Location Updated",
+                            Toast.LENGTH_LONG).show();
+                }
+                if (PLACE_PICKER_REQUEST == 2)
+                {
+                    stopLocation = place.getLatLng();
+                    Toast.makeText(getApplicationContext(), "Stop Location Updated",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
     // Helper function to more effectively parse email
@@ -426,6 +488,11 @@ public class MainActivity extends AppCompatActivity {
             mViewTravelType.setTextColor(Color.RED);
             check = false;
         }
+        if (startLocation == null || stopLocation == null)
+        {
+            Log.i("MainActivity", "Please select a start/stop location.");
+            check = false;
+        }
 
         /*
             The party is fully created here
@@ -466,10 +533,10 @@ public class MainActivity extends AppCompatActivity {
             List<String> followers = new ArrayList<>();
             followers.add("testUser1");
             followers.add("testUser2");
-            double start_lat = 0;
-            double start_long = 0;
-            double end_long = 0;
-            double end_lat = 0;
+            double start_lat = startLocation.latitude;
+            double start_long = startLocation.longitude;
+            double end_long = stopLocation.longitude;
+            double end_lat = stopLocation.latitude;
             boolean active = true;
             boolean launched = false;
 
@@ -525,5 +592,4 @@ public class MainActivity extends AppCompatActivity {
             init();
         }
     }
-
 }

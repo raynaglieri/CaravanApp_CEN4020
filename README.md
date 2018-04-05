@@ -42,12 +42,12 @@ Status:
 	- Integrate Google Maps API in MainActivity (Create Party) [check]
 	- Revamp Create New Party Layout [check]
 	- Added launch support for Journey Paries [check]
+	- Select start location (Geo LatLng--Google Maps API) [check]
+	- Select destination (Geo LatLng--Google Maps API) [check]
 
 IN PROGRESS:
 
 	- Add User->Inbox functionality to respond to invites [todo]
-	- Select start location (Geo LatLng--Google Maps API) [progress]
-	- Select destination (Geo LatLng--Google Maps API) [progress]
 
 TODO:
 
