@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Generate a Key?
         String key = db.getReference("users").push().getKey();
 
-        Users user = new Users(email, password, journeys, partyKeys, inbox, active_party);
+        Users user = new Users(email, password, journeys, partyKeys, inbox, active_party, 0, 0);
 
         FirebaseUser fb_user = mAuth.getCurrentUser();
 

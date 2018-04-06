@@ -53,4 +53,11 @@ public class JourneyLobby extends AppCompatActivity {
 
 
     }
+
+    // ADD LISTENER IN HERE THAT CONSTANTLY CHECKS FIREBASE CHANGE FOR LOGGED IN USER
+    // If launched, launch MapsActivity
+
+
+
+
 }

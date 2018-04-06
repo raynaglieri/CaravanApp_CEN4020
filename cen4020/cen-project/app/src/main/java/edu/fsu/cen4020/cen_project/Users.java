@@ -21,18 +21,22 @@ public class Users {
     public List<String> partyKeys;
     public List<String> inbox;
     public String active_party;
+    public double currentLat;
+    public double currentLong;
 
     public Users() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Users(String email, String password, int journeyCount, List<String> partyKeys, List<String> inbox, String active_party) {
+    public Users(String email, String password, int journeyCount, List<String> partyKeys, List<String> inbox, String active_party, double currentLat, double currentLong) {
         this.email = email;
         this.password = password;
         this.journeyCount = journeyCount;
         this.partyKeys = partyKeys;
         this.inbox = inbox;
         this.active_party = active_party;
+        this.currentLat = currentLat;
+        this.currentLong = currentLong;
     }
 
 }

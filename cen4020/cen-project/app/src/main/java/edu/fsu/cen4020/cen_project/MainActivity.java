@@ -540,7 +540,7 @@ public class MainActivity extends AppCompatActivity {
             boolean active = true;
             boolean launched = false;
 
-            Partys party = new Partys(partyKey, partyPassword, partyName, leader, followers, start_lat, start_long, end_long, end_lat, active, launched);
+            Partys party = new Partys(partyKey, partyPassword, partyName, leader, followers, start_lat, start_long, end_lat, end_long, active, launched);
 
             // create the database entry in firebase
             dbRef.child(partyKey).setValue(party);

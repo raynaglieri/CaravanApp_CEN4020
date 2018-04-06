@@ -279,8 +279,9 @@ public class JourneyActivity extends AppCompatActivity {
                     Intent intent = new Intent(JourneyActivity.this, MapsActivity.class);
 
                     // Pass party information into Intent w/ Bundle here
-
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("partyKey", selectedPartyKey);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else
