@@ -150,9 +150,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return;
                 }
                 getDeviceLocation();
-                for (Location location : locationResult.getLocations()) {
-                    Log.i("test", Double.toString(location.getLatitude()));
-                }
             };
         };
 
