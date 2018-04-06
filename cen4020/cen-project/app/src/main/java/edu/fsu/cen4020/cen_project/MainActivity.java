@@ -260,8 +260,15 @@ public class MainActivity extends AppCompatActivity {
                                 if (snapshot.child(joinPartyKey).exists()) {
                                     if (snapshot.child(joinPartyKey).child("partyPassword").getValue().toString().equals(joinPass))
                                     {
+                                        List<String> newFollowers = new ArrayList<>();
                                         // Add user as follower to party
-                                        dbRef.child("partys").child(joinPartyKey).child("followers").push().setValue(firebaseAuth.getCurrentUser().getEmail());
+                                        for (DataSnapshot ds : snapshot.child(joinPartyKey).child("followers").getChildren())
+                                        {
+                                            newFollowers.add(ds.getValue().toString());
+                                        }
+                                        newFollowers.add(firebaseAuth.getCurrentUser().getEmail());
+
+                                        dbRef.child("partys").child(joinPartyKey).child("followers").setValue(newFollowers);
                                         Toast.makeText(getApplicationContext(), "Party has been joined successfully.",
                                                 Toast.LENGTH_SHORT).show();
 
