@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }) ;
 
-        String welcomeMsg = "Welcome, " + currentUser.getEmail() + "!";
+        String welcomeMsg = "\nWelcome, " + currentUser.getEmail() + "!";
         mViewWelcomeUser.setText(welcomeMsg);
 
         // Launchable intents go here (button launches)
@@ -266,19 +266,20 @@ public class MainActivity extends AppCompatActivity {
                                         {
                                             newFollowers.add(ds.getValue().toString());
                                         }
-                                        newFollowers.add(firebaseAuth.getCurrentUser().getEmail());
 
-                                        dbRef.child("partys").child(joinPartyKey).child("followers").setValue(newFollowers);
-                                        Toast.makeText(getApplicationContext(), "Party has been joined successfully.",
-                                                Toast.LENGTH_SHORT).show();
+                                        if (newFollowers.contains(firebaseAuth.getCurrentUser().getEmail()))
+                                        {
+                                            Toast.makeText(getApplicationContext(), "You are already a member of this party.",
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        else
+                                        {
+                                            newFollowers.add(firebaseAuth.getCurrentUser().getEmail());
 
-                                        // TODO: Would you like to view the party now?: AlertDialog
-                                        // TODO: Launch JourneyLobby Activity
-                                        // --> In the JourneyLobby a user may Ready to indicate they are ready to start the journey
-                                        // Must we create a Follower class to indicate readyness?
-
-
-
+                                            dbRef.child("partys").child(joinPartyKey).child("followers").setValue(newFollowers);
+                                            Toast.makeText(getApplicationContext(), "You have joined the party successfully.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
 
                                     }
                                     else
@@ -538,16 +539,18 @@ public class MainActivity extends AppCompatActivity {
             String partyName = mPartyName.getText().toString();
             String leader = user.getEmail().toString();
             List<String> followers = new ArrayList<>();
-            followers.add("testUser1");
-            followers.add("testUser2");
+            // for testing purposes
+            //followers.add("testUser1");
+            //followers.add("testUser2");
             double start_lat = startLocation.latitude;
             double start_long = startLocation.longitude;
             double end_long = stopLocation.longitude;
             double end_lat = stopLocation.latitude;
             boolean active = true;
             boolean launched = false;
+            List<TravelRequests> requests = new ArrayList<>();
 
-            Partys party = new Partys(partyKey, partyPassword, partyName, leader, followers, start_lat, start_long, end_lat, end_long, active, launched);
+            Partys party = new Partys(partyKey, partyPassword, partyName, leader, followers, start_lat, start_long, end_lat, end_long, active, launched, requests);
 
             // create the database entry in firebase
             dbRef.child(partyKey).setValue(party);

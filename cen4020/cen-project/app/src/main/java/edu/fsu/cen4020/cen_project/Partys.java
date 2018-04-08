@@ -22,6 +22,7 @@ public class Partys {
     public String partyName;
     public String leader;
     public List<String> followers;
+    public List<TravelRequests> requests;
     public double start_lat;
     public double start_long;
     public double end_lat;
@@ -38,7 +39,7 @@ public class Partys {
     }
 
     public Partys(String groupID, String partyPassword, String groupName, String leader, List<String> followers, double start_lat, double start_long,
-                  double end_lat, double end_long, boolean active, boolean launched) {
+                  double end_lat, double end_long, boolean active, boolean launched, List<TravelRequests> requests) {
         this.partyKey = groupID;
         this.partyPassword = partyPassword;
         this.partyName = groupName;
@@ -50,6 +51,7 @@ public class Partys {
         this.end_long = end_long;
         this.active = active;
         this.launched = launched;   // if journey has been launched or not
+        this.requests = requests;
     }
 
     // Accessors go here

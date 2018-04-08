@@ -80,7 +80,7 @@
         android:layout_below="@+id/partySettingsButton"
         android:layout_marginTop="11dp"
         android:background="@color/colorAccent2Caravan"
-        android:text="Quick Invite" />
+        android:text="Quick Add/Invite" />
 
     <Button
         android:id="@+id/launchJourneyButton"

@@ -9,9 +9,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -19,8 +24,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,8 +60,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Default Markers include start and stop location
     public List<MarkerOptions> defaultMarkers;
 
+    public int PLACE_PICKER_REQUEST;
+
+    public Location mLastKnownLocation;
+
     // User markers include leaders and followers in the party
     public List<MarkerOptions> userMarkers;
+
+    public List<MarkerOptions> requestMarkers;
+
+    public List<TravelRequests> travelRequests;
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
@@ -83,6 +98,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public LocationRequest  locationRequest;
     public LocationCallback locationCallback;
     public GoogleApiClient googleAPIClient;
+
+    public ImageButton mGasButton, mReststopButton, mFoodButton;
+    public Button mLeaveJourney, mEndJourney;
 
     @Override
     public void onStart(){
@@ -157,8 +175,87 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Sets the layout
         setContentView(R.layout.activity_maps);
 
+        // Request buttons
+        mGasButton = (ImageButton) findViewById(R.id.gasButton);
+        mFoodButton = (ImageButton) findViewById(R.id.foodButton);
+        mReststopButton = (ImageButton) findViewById(R.id.reststopButton);
+
+        // Back button
+        mLeaveJourney = (Button) findViewById(R.id.leaveJourney);
+
+        // Leader only
+        mEndJourney = (Button) findViewById(R.id.endJourney);
+
+        mEndJourney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }) ;
+
+        mLeaveJourney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }) ;
+
+        mGasButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    PLACE_PICKER_REQUEST = 100;
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                    startActivityForResult(builder.build(MapsActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesNotAvailableException ex1) {
+                    Toast.makeText(MapsActivity.this, "Please update your Google Play Services", Toast.LENGTH_SHORT).show();
+                } catch (GooglePlayServicesRepairableException rp1) {
+                    Toast.makeText(MapsActivity.this, "Please repair your Google Play Services", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }) ;
+
+        mFoodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    PLACE_PICKER_REQUEST = 101;
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                    startActivityForResult(builder.build(MapsActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesNotAvailableException ex1) {
+                    Toast.makeText(MapsActivity.this, "Please update your Google Play Services", Toast.LENGTH_SHORT).show();
+                } catch (GooglePlayServicesRepairableException rp1) {
+                    Toast.makeText(MapsActivity.this, "Please repair your Google Play Services", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }) ;
+
+        mReststopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    PLACE_PICKER_REQUEST = 102;
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                    startActivityForResult(builder.build(MapsActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesNotAvailableException ex1) {
+                    Toast.makeText(MapsActivity.this, "Please update your Google Play Services", Toast.LENGTH_SHORT).show();
+                } catch (GooglePlayServicesRepairableException rp1) {
+                    Toast.makeText(MapsActivity.this, "Please repair your Google Play Services", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) ;
+
         defaultMarkers = new ArrayList<MarkerOptions>();
         userMarkers = new ArrayList<MarkerOptions>();
+        requestMarkers = new ArrayList<MarkerOptions>();
 
         googleAPIClient = new GoogleApiClient.Builder(MapsActivity.this)
                 .addApi(LocationServices.API)
@@ -208,8 +305,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onDataChange(DataSnapshot snapshot) {
                         userMarkers.clear();
 
-                        leaderLat = snapshot.child(emailToUsername(partyData.leader)).child("currentLat").getValue(Double.class);
-                        leaderLong = snapshot.child(emailToUsername(partyData.leader)).child("currentLong").getValue(Double.class);
+                        if (snapshot.child(emailToUsername(partyData.leader)).child("currentLat").exists() && snapshot.child(emailToUsername(partyData.leader)).child("currentLong").exists())
+                        {
+                            leaderLat = snapshot.child(emailToUsername(partyData.leader)).child("currentLat").getValue(Double.class);
+                            leaderLong = snapshot.child(emailToUsername(partyData.leader)).child("currentLong").getValue(Double.class);
+                        }
+
                         Toast.makeText(getApplicationContext(), "Position Update",
                                 Toast.LENGTH_LONG).show();
 
@@ -220,28 +321,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         userMarkers.add(leaderMarker);
 
-                        for (String follower : partyData.followers)
-                        {
-                            Toast.makeText(getApplicationContext(), follower.toString(),
-                                    Toast.LENGTH_LONG).show();
+                        if (partyData.followers != null) {
+                            for (String follower : partyData.followers) {
+                                Toast.makeText(getApplicationContext(), follower.toString(),
+                                        Toast.LENGTH_LONG).show();
 
-                            String username = emailToUsername(follower);
-                            if (snapshot.child(username).child("currentLat").exists() && snapshot.child(username).child("currentLong").exists())
-                            {
-                                double followerLat = snapshot.child(username).child("currentLat").getValue(Double.class);
-                                double followerLong = snapshot.child(username).child("currentLong").getValue(Double.class);
-                                MarkerOptions followerMarker = new MarkerOptions()
-                                        .position(new LatLng(followerLat, followerLong))
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                                        .title(username);
+                                String username = emailToUsername(follower);
+                                if (snapshot.child(username).child("currentLat").exists() && snapshot.child(username).child("currentLong").exists()) {
+                                    double followerLat = snapshot.child(username).child("currentLat").getValue(Double.class);
+                                    double followerLong = snapshot.child(username).child("currentLong").getValue(Double.class);
+                                    MarkerOptions followerMarker = new MarkerOptions()
+                                            .position(new LatLng(followerLat, followerLong))
+                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                            .title(username);
 
-                                userMarkers.add(followerMarker);
+                                    userMarkers.add(followerMarker);
+                                }
+
                             }
-
                         }
+
+                        if (partyData.requests != null) {
+                            for (TravelRequests request : partyData.requests) {
+                                double requestLat = request.latitude;
+                                double requestLong = request.longitude;
+                                MarkerOptions followerMarker = new MarkerOptions()
+                                        .position(new LatLng(requestLat, requestLong))
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                                        .title("Request Type: " + request.type + ", by: " + request.sentBy);
+                                requestMarkers.add(followerMarker);
+                            }
+                        }
+
                         clearMapMarkers();
                         loadMarkerList(defaultMarkers);
                         loadMarkerList(userMarkers);
+                        loadMarkerList(requestMarkers);
 
                         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -250,6 +365,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             builder.include(m.getPosition());
                         }
                         for (MarkerOptions m : userMarkers)
+                        {
+                            builder.include(m.getPosition());
+                        }
+                        for (MarkerOptions m : requestMarkers)
                         {
                             builder.include(m.getPosition());
                         }
@@ -286,6 +405,109 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                final Place place = PlacePicker.getPlace(data, MapsActivity.this);
+                // String toastMsg = String.format("Place: %s", place.getName());
+                // Toast.makeText(MainActivity.this, toastMsg, Toast.LENGTH_LONG).show();
+                if (PLACE_PICKER_REQUEST == 100)
+                {
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("partys").child(partyKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            TravelRequests request = new TravelRequests(
+                                    mAuth.getCurrentUser().getEmail().toString(),
+                                    place.getLatLng().latitude,
+                                    place.getLatLng().longitude,
+                                    "Gas");
+
+                            List<TravelRequests> newRequests = new ArrayList<>();
+                            if (snapshot.child("requests").exists())
+                            {
+                                for (DataSnapshot ds : snapshot.child("requests").getChildren()) {
+                                    newRequests.add(ds.getValue(TravelRequests.class));
+                                }
+                            }
+                            newRequests.add(request);
+
+                            mDatabase.child("partys").child(partyKey).child("requests").setValue(newRequests);
+                            Toast.makeText(getApplicationContext(), "Party requests added successfully.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+                if (PLACE_PICKER_REQUEST == 101)
+                {
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("partys").child(partyKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            TravelRequests request = new TravelRequests(
+                                    mAuth.getCurrentUser().getEmail().toString(),
+                                    place.getLatLng().latitude,
+                                    place.getLatLng().longitude,
+                                    "Food");
+
+                            List<TravelRequests> newRequests = new ArrayList<>();
+                            if (snapshot.child("requests").exists())
+                            {
+                                for (DataSnapshot ds : snapshot.child("requests").getChildren()) {
+                                    newRequests.add(ds.getValue(TravelRequests.class));
+                                }
+                            }
+                            newRequests.add(request);
+
+                            mDatabase.child("partys").child(partyKey).child("requests").setValue(newRequests);
+                            Toast.makeText(getApplicationContext(), "Party requests added successfully.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+                if (PLACE_PICKER_REQUEST == 102)
+                {
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("partys").child(partyKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            TravelRequests request = new TravelRequests(
+                                    mAuth.getCurrentUser().getEmail().toString(),
+                                    place.getLatLng().latitude,
+                                    place.getLatLng().longitude,
+                                    "Rest");
+
+                            List<TravelRequests> newRequests = new ArrayList<>();
+                            if (snapshot.child("requests").exists())
+                            {
+                                for (DataSnapshot ds : snapshot.child("requests").getChildren()) {
+                                    newRequests.add(ds.getValue(TravelRequests.class));
+                                }
+                            }
+                            newRequests.add(request);
+
+                            mDatabase.child("partys").child(partyKey).child("requests").setValue(newRequests);
+                            Toast.makeText(getApplicationContext(), "Party requests added successfully.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+        }
     }
 
     /**
@@ -484,7 +706,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
-                            Location mLastKnownLocation = task.getResult();
+                            mLastKnownLocation = task.getResult();
                             if (mLastKnownLocation != null) {
                                 //Log.i("Lat", Double.toString(mLastKnownLocation.getLatitude()));
                                 //Log.i("Long", Double.toString(mLastKnownLocation.getLongitude()));
