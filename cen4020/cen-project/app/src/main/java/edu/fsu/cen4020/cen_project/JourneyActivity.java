@@ -146,6 +146,10 @@ public class JourneyActivity extends AppCompatActivity {
 
                 // Iterate through the followers that belong to the selected partyKey
                 // and add them to the partyFollowers list
+                if (partyFollowers.size() > 0) {
+                    partyFollowers.clear();
+                }
+
                 for (DataSnapshot ds : snapshot.child(partyKey).child("followers").getChildren())
                 {
                     String user = ds.getValue().toString();
@@ -157,7 +161,13 @@ public class JourneyActivity extends AppCompatActivity {
                     Set data here as needed in interface
                 */
                 // Party Name -- TODO: Place this differently in layout
-                partyName = snapshot.child(partyKey).child("partyName").getValue().toString();
+
+                try {
+                    partyName = snapshot.child(partyKey).child("partyName").getValue().toString();
+                } catch (NullPointerException e)
+                {
+                    Log.i("JourneyActivity", "Null Party Name");
+                }
                 mTextPartyName.setText("Selected Party: " + partyName);
                 selectedPartyKey = partyKey;
 
@@ -191,8 +201,7 @@ public class JourneyActivity extends AppCompatActivity {
         mPartySelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Spinner selected with pos: " + position,
-                        Toast.LENGTH_LONG).show();
+
                 getSelectedPartyData(position);
             }
 
@@ -203,8 +212,6 @@ public class JourneyActivity extends AppCompatActivity {
         });
 
         // Invites -- must be handled with a separate table (Invites.java)
-        // TODO: Make Invites.java to handle invites via Firebase
-        // TODO: Create notification manager based on invites in Table
 
         mQuickInviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +219,7 @@ public class JourneyActivity extends AppCompatActivity {
                 final EditText userInput = new EditText(v.getContext());
                 AlertDialog inviteDialog = new AlertDialog.Builder(JourneyActivity.this).create();
                 inviteDialog.setTitle("Invite Follower");
-                inviteDialog.setMessage("Please enter an existing user's email address:");
+                inviteDialog.setMessage("Please enter an existing user's username (not email address):");
                 inviteDialog.setView(userInput);
                 inviteDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
                         new DialogInterface.OnClickListener() {
@@ -227,9 +234,9 @@ public class JourneyActivity extends AppCompatActivity {
                                 //userEmail string (receiver)
                                 final String userEmail = userInput.getText().toString();
 
-                                if (userEmail.isEmpty())
+                                if (userEmail.isEmpty() || userEmail.contains(".") || userEmail.contains("@"))
                                 {
-                                    Toast.makeText(getApplicationContext(), "No email address entered. Invite not sent.",
+                                    Toast.makeText(getApplicationContext(), "Username entered incorrectly. Invite not sent.",
                                             Toast.LENGTH_LONG).show();
                                 }
                                 else {
@@ -244,7 +251,7 @@ public class JourneyActivity extends AppCompatActivity {
 
                                                 // Create and send the invite
                                                 Invites invite = new Invites(selectedPartyKey, mAuth.getCurrentUser().getEmail(), userEmail);
-                                                sendInvite(invite);
+                                                sendInvite(invite, snapshot.child(userEmail).child("email").getValue().toString());
                                             } else {
                                                 // User does not exist
                                                 Toast.makeText(getApplicationContext(), "User not found. Invite not sent.",
@@ -358,14 +365,46 @@ public class JourneyActivity extends AppCompatActivity {
 
     // Sends the invite to receiver
     // Pair Programming by: Victor and Phalguna
-    public void sendInvite(Invites invite)
+    public void sendInvite(final Invites invite, final String realEmail)
     {
-        DatabaseReference dbRef;
-        dbRef = FirebaseDatabase.getInstance().getReference().child("users");
-        dbRef.child(invite.getReceiver()).child("inbox").push().setValue(invite);
 
-        Toast.makeText(getApplicationContext(), "Invite sent.",
-                Toast.LENGTH_LONG).show();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("partys").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                List<String> newFollowers = new ArrayList<>();
+                // Add user as follower to party
+                for (DataSnapshot ds : snapshot.child(invite.partyKey).child("followers").getChildren())
+                {
+                    newFollowers.add(ds.getValue().toString());
+                }
+
+                if (newFollowers.contains(realEmail))
+                {
+                    Toast.makeText(getApplicationContext(), "User is already present in the party. Invite not sent.",
+                            Toast.LENGTH_LONG).show();
+                } else if (realEmail.equals(snapshot.child(invite.partyKey).child("leader").getValue().toString()))
+                {
+                    Toast.makeText(getApplicationContext(), "A leader cannot follow their own party!",
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    newFollowers.add(realEmail);
+                    mDatabase.child("partys").child(invite.partyKey).child("followers").setValue(newFollowers);
+
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+                    mDatabase.child(invite.getReceiver()).child("inbox").push().setValue(invite);
+
+                    Toast.makeText(getApplicationContext(), "Invite sent. User automatically added to party.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
     }
 }

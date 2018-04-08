@@ -6,4 +6,6 @@
     <color name="colorAccent2Caravan">#ff97bb</color>
     <color name="colorAccentListView">#ffcde1</color>
     <color name="caravanAccent">#ffffff</color>
+    <color name="greenColorAccent">#b0f27d</color>
+    <color name="redCaravan">#bd311f</color>
 </resources>
