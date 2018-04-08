@@ -293,8 +293,8 @@ public class JourneyActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(JourneyActivity.this, "All users must be ready in order to launch.",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(JourneyActivity.this, "All users must be ready in order to launch.",
+                    //        Toast.LENGTH_SHORT).show();
                 }
 
             }
