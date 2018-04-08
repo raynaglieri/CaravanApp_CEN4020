@@ -40,12 +40,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
     Initial implementation and skeleton by: Victor and Raymond (via Pair Programming)
  */
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
+
+    // Default Markers include start and stop location
+    public List<MarkerOptions> defaultMarkers;
+
+    // User markers include leaders and followers in the party
+    public List<MarkerOptions> userMarkers;
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
@@ -68,6 +77,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public String partyKey;
     public FirebaseUser currentUser;
     public Partys partyData = new Partys();
+    public double leaderLat;
+    public double leaderLong;
 
     public LocationRequest  locationRequest;
     public LocationCallback locationCallback;
@@ -85,11 +96,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onConnectionSuspended(int id){
-
+        Log.i("Error", "Connection to Google Api Client Suspended");
     }
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult){
-
+        Log.i("Error", "Connection to Google Api Client Failed");
     }
     @Override
     public void onConnected(Bundle bundle){
@@ -107,11 +118,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("Exception: %s", e.getMessage());
         }
     }
-/*
+
     @Override
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+
     }
 
     private void startLocationUpdates() {
@@ -125,11 +143,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    protected void onStop()
+    private void stopLocationUpdates()
     {
-        pause updates?
+        mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        Toast.makeText(getApplicationContext(), "Location updates stopped.",
+                Toast.LENGTH_LONG).show();
     }
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +156,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Sets the layout
         setContentView(R.layout.activity_maps);
+
+        defaultMarkers = new ArrayList<MarkerOptions>();
+        userMarkers = new ArrayList<MarkerOptions>();
 
         googleAPIClient = new GoogleApiClient.Builder(MapsActivity.this)
                 .addApi(LocationServices.API)
@@ -150,9 +172,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return;
                 }
                 getDeviceLocation();
+                for (Location location : locationResult.getLocations()) {
+                    Log.i("test", Double.toString(location.getLatitude()));
+                }
             };
         };
-
 
         // get passed data
         Intent extras = getIntent();
@@ -169,11 +193,78 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Get our Firebase database reference
         mDatabase = FirebaseDatabase.getInstance().getReference().child("partys").child(partyKey);
 
-        // Add Journey start marker
+        // Load party Data
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 partyData = snapshot.getValue(Partys.class);
+                // Load leader Data
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+
+                //setLeaderListener(emailToUsername(partyData.leader));
+                //setFollowerListener();
+                mDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        userMarkers.clear();
+
+                        leaderLat = snapshot.child(emailToUsername(partyData.leader)).child("currentLat").getValue(Double.class);
+                        leaderLong = snapshot.child(emailToUsername(partyData.leader)).child("currentLong").getValue(Double.class);
+                        Toast.makeText(getApplicationContext(), "Position Update",
+                                Toast.LENGTH_LONG).show();
+
+                        MarkerOptions leaderMarker = new MarkerOptions()
+                                .position(new LatLng(leaderLat, leaderLong))
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                .title("Party Leader");
+
+                        userMarkers.add(leaderMarker);
+
+                        for (String follower : partyData.followers)
+                        {
+                            Toast.makeText(getApplicationContext(), follower.toString(),
+                                    Toast.LENGTH_LONG).show();
+
+                            String username = emailToUsername(follower);
+                            if (snapshot.child(username).child("currentLat").exists() && snapshot.child(username).child("currentLong").exists())
+                            {
+                                double followerLat = snapshot.child(username).child("currentLat").getValue(Double.class);
+                                double followerLong = snapshot.child(username).child("currentLong").getValue(Double.class);
+                                MarkerOptions followerMarker = new MarkerOptions()
+                                        .position(new LatLng(followerLat, followerLong))
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                        .title(username);
+
+                                userMarkers.add(followerMarker);
+                            }
+
+                        }
+                        clearMapMarkers();
+                        loadMarkerList(defaultMarkers);
+                        loadMarkerList(userMarkers);
+
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+                        for (MarkerOptions m : defaultMarkers)
+                        {
+                            builder.include(m.getPosition());
+                        }
+                        for (MarkerOptions m : userMarkers)
+                        {
+                            builder.include(m.getPosition());
+                        }
+
+                        LatLngBounds bounds = builder.build();
+
+                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 75);
+                        mMap.animateCamera(cu);
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i("DB Error", "DB ERROR");
+                    }
+                });
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -214,35 +305,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         updateLocationUI();
 
         // Get the current location of the device and set the position of the map.
+        // Make sure to check if this is non-null
         getDeviceLocation();
 
-        // Pair Programming: Phalguna and Victor
+        // Create Initial Markers
+        MarkerOptions startMarker = new MarkerOptions()
+                .position(new LatLng(partyData.start_lat, partyData.start_long))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                .title("Start Location");
 
-        LatLng marker = new LatLng(partyData.start_lat, partyData.start_long);
-        LatLng marker2 = new LatLng(partyData.end_lat, partyData.end_long);
+        MarkerOptions stopMarker = new MarkerOptions()
+                .position(new LatLng(partyData.end_lat, partyData.end_long))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                .title("Destination");
+
+        defaultMarkers.add(startMarker);
+        defaultMarkers.add(stopMarker);
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(marker);
-        builder.include(marker2);
+        builder.include(startMarker.getPosition());
+        builder.include(stopMarker.getPosition());
         LatLngBounds bounds = builder.build();
 
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 75);
 
-        mMap.addMarker(new MarkerOptions().position(marker)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-                .title("Start Location"));  // TODO: Maybe make this the name of the place?
-
-        mMap.addMarker(new MarkerOptions().position(marker2)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-                .title("Destination"));   // TODO: Address/Name of the place?
-
-        //Polyline line = googleMap.addPolyline(new PolylineOptions()
-        //        .add(marker,
-        //                marker2)
-        //        .geodesic(true));
+        loadMarkerList(defaultMarkers);
+        loadLeaderMarker();
 
         googleMap.moveCamera(cu);
 
+    }
+
+    public void loadMarkerList(List<MarkerOptions> markers)
+    {
+        for (MarkerOptions m : markers)
+        {
+            mMap.addMarker(m);
+        }
     }
 
     // update each user's location
@@ -251,9 +350,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // Theory; By Victor, Ray, Phalguna
 
-    public void loadFollowerMarkers()
+    public void clearMapMarkers()
     {
-
+        mMap.clear();
     }
 
     public void loadLeaderMarker()
@@ -262,6 +361,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Query FB Party with PartyKey and get leader
         // Query FB user with leader name to get user (leader) lat/long
         // update marker
+
+        LatLng leaderMarker = new LatLng(leaderLat, leaderLong);
+
+        mMap.addMarker(new MarkerOptions().position(leaderMarker)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                .title("Party Leader"));   // TODO: Address/Name of the place?
+
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(leaderMarker, 16));
+
+
+    }
+
+    public void loadFollowerMarkers()
+    {
+
     }
 
     public void loadRequestMarkers()
@@ -276,12 +390,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         */
     }
 
-    public void updateUserLocation()
+    public void updateFirebaseUserLocation(Location location)
     {
-        // Updates Firebase for current user lat/long
-        // When user location changes in Firebase, update markers
+        String username = emailToUsername(currentUser.getEmail());
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(username);
+        mDatabase.child("currentLat").setValue(location.getLatitude());
+        mDatabase.child("currentLong").setValue(location.getLongitude());
     }
 
+    public String emailToUsername(String email)
+    {
+        String[] full = (email.split("@"));
+        String username = full[0];
+
+        return username;
+    }
+
+
+
+    /*
+     * Begin Google Application permissions and location monitoring calls
+     *
+     *
+     *
+     *
+     */
 
     // User Location Provided by Google Maps API
     private void getLocationPermission() {
@@ -351,11 +485,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             Location mLastKnownLocation = task.getResult();
-                            Log.i("Lat", Double.toString(mLastKnownLocation.getLatitude()));
-                            Log.i("Long", Double.toString(mLastKnownLocation.getLongitude()));
-                            Toast.makeText(getApplicationContext(), "Lat,Long: " + Double.toString(mLastKnownLocation.getLatitude()) + ", " + Double.toString(mLastKnownLocation.getLongitude()),
-                                    Toast.LENGTH_LONG).show();
-
+                            if (mLastKnownLocation != null) {
+                                //Log.i("Lat", Double.toString(mLastKnownLocation.getLatitude()));
+                                //Log.i("Long", Double.toString(mLastKnownLocation.getLongitude()));
+                                Toast.makeText(getApplicationContext(), "Lat,Long: " + Double.toString(mLastKnownLocation.getLatitude()) + ", " + Double.toString(mLastKnownLocation.getLongitude()),
+                                        Toast.LENGTH_LONG).show();
+                                updateFirebaseUserLocation(mLastKnownLocation);
+                            }
                         } else {
                             Log.d("GET DEV LOC", "Current location is null. Using defaults.");
                             Log.e("GET DEV LOC", "Exception: %s", task.getException());
@@ -369,9 +505,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("Exception: %s", e.getMessage());
         }
     }
-
-
-
-
-
 }

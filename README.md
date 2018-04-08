@@ -42,8 +42,15 @@ Status:
 	- Integrate Google Maps API in MainActivity (Create Party) [check]
 	- Revamp Create New Party Layout [check]
 	- Added launch support for Journey Paries [check]
-	- Select start location (Geo LatLng--Google Maps API) [check]
-	- Select destination (Geo LatLng--Google Maps API) [check]
+	- Select start location (Geo LatLng--Google Maps API, Google Places API) [check]
+	- Select destination (Geo LatLng--Google Maps API, Google Places API) [check]
+	- Google Places API integrated for location and map monitoring on Google Maps interface [check]
+	- Multi-user support [check]
+	- Journey Lobby for followers integrated: allows followers to enter journey that has been launched (via listener confirmation) [check]
+	- UI and Logo Graphic [check]
+	- Location updates for leader and follower on Launched Journey map [check]
+	- Location for stop and start location added on Launched Journey map [check]
+
 
 IN PROGRESS:
 
@@ -52,9 +59,7 @@ IN PROGRESS:
 TODO:
 
 	- Potential Change: User system, Invite system based on email addresses instead of usernames to increase potential userbase.
-	- Multi-user support
 	- Additional launch functionality: broadcast sender and receiver for journey launch
-	- Journey Settings
 	- Text message support to send PartyKey:Password to a user
 	- Add back buttons instead of android default UI back button
 	- Fix strange NullPointerOutofBounds exception on login

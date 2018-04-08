@@ -7,13 +7,14 @@
 
 
     <ListView
+        android:id="@+id/expandableListView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="14dp"
-        android:id="@+id/expandableListView" />
+        android:divider="@color/colorAccent" />
 
     <Button
         android:id="@+id/enterButton"
@@ -23,6 +24,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/expandableListView"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorAccent"
         android:text="Enter Lobby" />
 
 

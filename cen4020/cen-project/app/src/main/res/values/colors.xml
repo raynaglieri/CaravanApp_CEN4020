@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303f9f</color>
-    <color name="colorAccent">#ff5c94</color>
+    <color name="colorPrimaryDark">#8a615c</color>
+    <color name="colorAccent">#ff6fc0</color>
     <color name="colorAccent2Caravan">#ff97bb</color>
     <color name="colorAccentListView">#ffcde1</color>
+    <color name="caravanAccent">#ffffff</color>
 </resources>
