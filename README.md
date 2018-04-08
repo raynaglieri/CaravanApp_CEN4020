@@ -3,7 +3,7 @@ Caravan App for Android.
 README:
 2/18/18:
 Compile and Run: 
-1.	Download and install the latest version of Android Studio: 3.0.1. 
+1.	Download and install Android Studio 3.0.1: https://dl.google.com/dl/android/studio/install/3.0.1.0/android-studio-ide-171.4443003-windows.exe 
 2.	Choose the import project option form the main menu. 
 3.	Select the cen-project directory within the cen4020 directory and click open.
 4.	Follow direction provided by android studio to install any necessary libraries. 
