@@ -120,10 +120,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(ConnectionResult connectionResult){
         Log.i("Error", "Connection to Google Api Client Failed");
     }
+
+    // Pair programming and theory by Victor and Roberto (start/stop location updates)
     @Override
     public void onConnected(Bundle bundle){
 
-        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5*1000);
@@ -150,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    // Pair programming and theory by Victor and Roberto (start/stop location updates)
     private void startLocationUpdates() {
         try {
             if (mLocationPermissionGranted) {
@@ -164,8 +167,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void stopLocationUpdates()
     {
         mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        Toast.makeText(getApplicationContext(), "Location updates stopped.",
-                Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Location updates stopped.",
+        //        Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -186,20 +189,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Leader only
         mEndJourney = (Button) findViewById(R.id.endJourney);
 
+        // Pair programming by Phalguna and Raymond
         mEndJourney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Not needed
             }
         }) ;
 
+        // Pair programming by Phalguna and Raymond
         mLeaveJourney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Not needed
             }
         }) ;
 
+        // Pair programming by Phalguna and Raymond
         mGasButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,6 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }) ;
 
+        // Pair programming by Phalguna and Raymond
         mFoodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,6 +243,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }) ;
 
+        // Pair programming by Phalguna and Raymond
         mReststopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +299,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDatabase = FirebaseDatabase.getInstance().getReference().child("partys").child(partyKey);
 
         // Load party Data
+        // Pair programming by Victor and Raymond
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -311,8 +320,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             leaderLong = snapshot.child(emailToUsername(partyData.leader)).child("currentLong").getValue(Double.class);
                         }
 
-                        Toast.makeText(getApplicationContext(), "Position Update",
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Position Update",
+                        //        Toast.LENGTH_LONG).show();
 
                         MarkerOptions leaderMarker = new MarkerOptions()
                                 .position(new LatLng(leaderLat, leaderLong))
@@ -321,10 +330,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         userMarkers.add(leaderMarker);
 
+                        // Marker loading by Victor and Phalguna, Raymond and Phalguna
                         if (partyData.followers != null) {
                             for (String follower : partyData.followers) {
-                                Toast.makeText(getApplicationContext(), follower.toString(),
-                                        Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), follower.toString(),
+                                //        Toast.LENGTH_LONG).show();
 
                                 String username = emailToUsername(follower);
                                 if (snapshot.child(username).child("currentLat").exists() && snapshot.child(username).child("currentLong").exists()) {
@@ -358,6 +368,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         loadMarkerList(userMarkers);
                         loadMarkerList(requestMarkers);
 
+                        // Pair programming (bounds inclusion) by Phalguna and Roberto
                         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
                         for (MarkerOptions m : defaultMarkers)
@@ -407,6 +418,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    // Pair programming by Victor and Raymond (initial)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
@@ -519,6 +531,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    // Pair Programming by Victor and Roberto, Victor and Phalguna
+    // Marker loading on MapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -566,10 +581,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // update each user's location
-    // clear map
-    // add all markers back (refresh)
-
+    // PSEUDO IMPLEMENTATION:
+        // update each user's location
+        // clear map
+        // add all markers back (refresh)
     // Theory; By Victor, Ray, Phalguna
 
     public void clearMapMarkers()
@@ -595,23 +610,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void loadFollowerMarkers()
-    {
-
-    }
-
-    public void loadRequestMarkers()
-    {
-        // Get lat/long of leader's location
-        // If leader location is within 10 mile bound of request, load
-        /*
-        for each request in firebase party request list
-            mMap.addMarker(new MarkerOptions()
-                    .position(request_lat,request_long).title("Request info here"));
-                    .some image
-        */
-    }
-
+    // Pair programming: Raymond and Roberto
     public void updateFirebaseUserLocation(Location location)
     {
         String username = emailToUsername(currentUser.getEmail());
@@ -621,6 +620,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDatabase.child("currentLong").setValue(location.getLongitude());
     }
 
+    // Initially implemented in MainActivity by Victor
     public String emailToUsername(String email)
     {
         String[] full = (email.split("@"));
@@ -634,12 +634,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /*
      * Begin Google Application permissions and location monitoring calls
      *
-     *
-     *
-     *
      */
 
     // User Location Provided by Google Maps API
+    // Initial implementation from Google API documentation/code stubs.
+    // Additions by Victor and Phalguna, includes research on how to enable location gathering (through android manifest)
     private void getLocationPermission() {
     /*
      * Request location permission, so that we can get the location of the
@@ -657,6 +656,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    // Initial implementation from Google API documentation/code stubs.
+    // Additions by Roberto and Raymond
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -673,7 +674,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         updateLocationUI();
     }
-
+    // Initial implementation from Google API documentation/code stubs.
+    // Additions by Phalguna and Roberto
     private void updateLocationUI() {
         if (mMap == null) {
             return;
@@ -693,6 +695,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    // Initial implementation from Google API documentation/code stubs.
+    // Additions by Phalguna and Raymond
     private void getDeviceLocation() {
     /*
      * Get the best and most recent location of the device, which may be null in rare
@@ -710,8 +714,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             if (mLastKnownLocation != null) {
                                 //Log.i("Lat", Double.toString(mLastKnownLocation.getLatitude()));
                                 //Log.i("Long", Double.toString(mLastKnownLocation.getLongitude()));
-                                Toast.makeText(getApplicationContext(), "Lat,Long: " + Double.toString(mLastKnownLocation.getLatitude()) + ", " + Double.toString(mLastKnownLocation.getLongitude()),
-                                        Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Lat,Long: " + Double.toString(mLastKnownLocation.getLatitude()) + ", " + Double.toString(mLastKnownLocation.getLongitude()),
+                                //        Toast.LENGTH_LONG).show();
                                 updateFirebaseUserLocation(mLastKnownLocation);
                             }
                         } else {

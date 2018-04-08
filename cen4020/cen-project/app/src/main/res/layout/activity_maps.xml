@@ -51,7 +51,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:backgroundTint="@color/colorAccent2Caravan"
-        android:text="Leave Journey" />
+        android:text="Leave Journey"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/endJourney"
@@ -63,7 +64,8 @@
         android:layout_alignRight="@+id/leaveJourney"
         android:layout_alignStart="@+id/leaveJourney"
         android:backgroundTint="@color/colorAccent2Caravan"
-        android:text="End Journey" />
+        android:text="End Journey"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

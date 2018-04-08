@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id)
                     {
-                        Toast.makeText(getApplicationContext(), "Short click",
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Short click",
+                        //        Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // TODO: Implement Google Maps Place Picker API
-                        Toast.makeText(MainActivity.this, "Start Location", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Start Location", Toast.LENGTH_SHORT).show();
                         try {
 
                             PLACE_PICKER_REQUEST = 1;
@@ -355,8 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 mStopLocationButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: Implement Google Maps Place Picker API
-                        Toast.makeText(MainActivity.this, "Stop Location", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Stop Location", Toast.LENGTH_SHORT).show();
                         try {
 
                             PLACE_PICKER_REQUEST = 2;
@@ -579,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-            Toast.makeText(getApplicationContext(), "Error: Please fix the invalid fields.",
+            Toast.makeText(getApplicationContext(), "Error: Please fix invalid fields.",
                     Toast.LENGTH_LONG).show();
         }
 

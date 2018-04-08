@@ -1,7 +1,7 @@
 package edu.fsu.cen4020.cen_project;
 
 /**
- * Created by Victor Cordiano, Phalguna
+ * Created by Victor, Phalguna
  * Pair programming by Victor, Phalguna
  */
 

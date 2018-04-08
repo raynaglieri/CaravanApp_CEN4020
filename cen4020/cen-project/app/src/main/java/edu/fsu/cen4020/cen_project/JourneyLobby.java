@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 /*
-    JourneyLobby.java -- Initial theory and implementation via Pair Programming by Victor and Phalguna
+    JourneyLobby.java -- Initial theory and implementation via Pair Programming by Victor and Phalguna (initial), Victor and Raymond (additions)
 
     Each party has a lobby, a user may join the lobby and indicate readyness, as well as view other
     user's readyness.
@@ -80,6 +80,7 @@ public class JourneyLobby extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("partys").child(partyKey);
 
         // Load party Data
+        // Pair programming by Victor and Raymond
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -128,12 +129,4 @@ public class JourneyLobby extends AppCompatActivity {
 
 
     }
-
-    // ADD LISTENER IN HERE THAT CONSTANTLY CHECKS FIREBASE CHANGE FOR LOGGED IN USER
-    // If launched, launch MapsActivity
-
-    //
-
-
-
 }
