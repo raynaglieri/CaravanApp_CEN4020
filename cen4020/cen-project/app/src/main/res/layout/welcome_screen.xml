@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="278dp"
-        app:srcCompat="@android:drawable/btn_star" />
+        app:srcCompat="@raw/caravanlogo" />
 
     <Button
         android:id="@+id/existUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorAccent"
         android:onClick="goLogin"
         android:text="Login (Existing User)" />
 
@@ -20,6 +23,7 @@
         android:id="@+id/registerUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorAccent"
         android:onClick="goRegister"
         android:text="Register" />
 
@@ -28,5 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="goSkip"
-        android:text="SKIP" />
+        android:text="SKIP"
+        android:visibility="gone" />
+
 </LinearLayout>

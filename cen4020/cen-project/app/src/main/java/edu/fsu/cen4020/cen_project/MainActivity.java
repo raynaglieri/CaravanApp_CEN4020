@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             arg0.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
                         }
-                        arg0.getChildAt(pos).setBackgroundColor(Color.MAGENTA);
+                        arg0.getChildAt(pos).setBackgroundColor(Color.rgb(176, 242, 125));
 
                         return true;
                     }

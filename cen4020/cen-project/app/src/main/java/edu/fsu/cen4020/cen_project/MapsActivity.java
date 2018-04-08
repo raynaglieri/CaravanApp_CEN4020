@@ -125,6 +125,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startLocationUpdates();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+
+    }
+
     private void startLocationUpdates() {
         try {
             if (mLocationPermissionGranted) {
@@ -134,6 +141,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch(SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private void stopLocationUpdates()
+    {
+        mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        Toast.makeText(getApplicationContext(), "Location updates stopped.",
+                Toast.LENGTH_LONG).show();
     }
 
     @Override
